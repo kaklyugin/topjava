@@ -2,14 +2,11 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExcess;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -25,37 +22,35 @@ public class UserMealsUtil {
         
         List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
-
 //        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
     
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO return filtered list with excess. Implement by cycles
-        List<UserMeal> mealsFilteredByStartAndEndTime = new ArrayList<>();
+        // Сумма калорий за день
+        Map<LocalDate, Integer> dayCaloriesTotalSum = new HashMap<>();
+        // Считаем суммарное кол-во калорий за день
+        meals.forEach(
+                meal ->
+                        dayCaloriesTotalSum.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum)
+        );
+        // Массив с результатом фильтрации и флагом превышения калорий
         List<UserMealWithExcess> resultingMealsList = new ArrayList<>();
-        AtomicInteger filteredMealsCaloriesSum = new AtomicInteger();
         meals.forEach(
                 meal ->
                 {
-                    if (meal.getDateTime().toLocalTime().compareTo(startTime) >= 1 && meal.getDateTime().toLocalTime().compareTo(startTime) <= 0) {
-                        mealsFilteredByStartAndEndTime.add(meal);
-                        filteredMealsCaloriesSum.addAndGet(meal.getCalories());
+                    boolean isInTimeRange = TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime);
+                    boolean caloriesPerDayWereExceeded = dayCaloriesTotalSum.get(meal.getDateTime().toLocalDate()) > caloriesPerDay;
+                    if (isInTimeRange) {
+                        resultingMealsList.add(
+                                new UserMealWithExcess(
+                                        meal.getDateTime(),
+                                        meal.getDescription(),
+                                        meal.getCalories(),
+                                        caloriesPerDayWereExceeded
+                                ));
                     }
-                });
-        
-        final boolean caloriesPerDayWereExceeded = filteredMealsCaloriesSum.get() >= caloriesPerDay;
-        mealsFilteredByStartAndEndTime.forEach(meal ->
-                {
-                    resultingMealsList.add(
-                            new UserMealWithExcess(
-                                    meal.getDateTime(),
-                                    meal.getDescription(),
-                                    meal.getCalories(),
-                                    caloriesPerDayWereExceeded
-                            ));
                 }
         );
-        
         return resultingMealsList;
     }
     
