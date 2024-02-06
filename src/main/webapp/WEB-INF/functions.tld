@@ -6,7 +6,7 @@
         version="2.1">
     <tlib-version>1.0</tlib-version>
     <short-name>Custom_Functions</short-name>
-    <uri>http://example.com/functions</uri>
+    <uri>http://topjava.ru/functions/dateformatter</uri>
     <function>
         <name>formatLocalDateTime</name>
         <function-class>ru.javawebinar.topjava.util.Dates</function-class>
