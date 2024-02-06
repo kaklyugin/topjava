@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InitialTestDataLoader {
-    private static InitialTestDataLoader INSTANCE;
-    private List<Meal> meals;
+public class MealListTempDataStorage {
+    private static List<Meal> meals = Collections.synchronizedList(new ArrayList<>());
     
-    private InitialTestDataLoader() {
-        meals = Collections.synchronizedList(new ArrayList<>());
+    static {
         meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
         meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
         meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
@@ -23,15 +21,8 @@ public class InitialTestDataLoader {
         meals.add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
     }
     
-    public static InitialTestDataLoader getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new InitialTestDataLoader();
-        }
-        return INSTANCE;
-    }
-    
-    public List<Meal> getMeal() {
-        return this.meals;
+    public static List<Meal> getMeals() {
+        return meals;
     }
 }
 

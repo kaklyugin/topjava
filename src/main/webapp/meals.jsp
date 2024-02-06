@@ -9,13 +9,16 @@
     .common {
         color: red;
     }
+
     .alert {
         color: green;
     }
+
     table {
         border-collapse: collapse;
         border: 1px solid black;
     }
+
     table td {
         border: 1px solid black;
     }

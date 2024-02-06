@@ -3,8 +3,8 @@ package ru.javawebinar.topjava.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Dates {
-    private Dates() {
+public class DateUtils {
+    private DateUtils() {
     }
     
     public static String formatLocalDateTime(LocalDateTime localDateTime, String pattern) {
