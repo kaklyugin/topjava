@@ -27,8 +27,10 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<a href="./NewMealServlet">Add meal</a>
 <table>
   <tr>
+    <th>Id</th>
     <th>Date</th>
     <th>Description</th>
     <th>Calories</th>
@@ -37,6 +39,7 @@
   </tr>
   <c:forEach var="mealTo" items="${mealTo}">
     <tr class="${mealTo.excess ? 'common' : 'alert'}">
+      <td>${mealTo.id}</td>
       <td>${f:formatLocalDateTime(mealTo.dateTime, 'yyyy-MM-dd HH:mm')}</td>
       <td>${mealTo.description}</td>
       <td>${mealTo.calories}</td>

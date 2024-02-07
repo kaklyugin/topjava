@@ -23,4 +23,22 @@
         <servlet-name>mealServlet</servlet-name>
         <url-pattern>/meals</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <display-name>NewMealServlet</display-name>
+        <servlet-name>NewMealServlet</servlet-name>
+        <servlet-class>ru.javawebinar.topjava.web.NewMealServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewMealServlet</servlet-name>
+        <url-pattern>/NewMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <display-name>ErrorServlet</display-name>
+        <servlet-name>ErrorServlet</servlet-name>
+        <servlet-class>ru.javawebinar.topjava.web.ErrorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ErrorServlet</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
 </web-app>
