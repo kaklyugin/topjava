@@ -3,7 +3,8 @@ package ru.javawebinar.topjava.web;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.init.MealListTempDataStorage;
+import ru.javawebinar.topjava.repository.MealInMemoryRepository;
+import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -18,12 +19,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
+    private final MealRepository mealRepository = MealInMemoryRepository.getInstance();
     private static final int DEFAULT_CALORIES_PER_DAY = 2000;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("initializing meals list");
-        List<Meal> meals = MealListTempDataStorage.getMeals();
+        List<Meal> meals = mealRepository.getAllMeals();
         List<MealTo> mealTo = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, DEFAULT_CALORIES_PER_DAY);
         request.setAttribute("mealTo", mealTo);
         log.debug("forward to meals");

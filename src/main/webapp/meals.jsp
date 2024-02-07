@@ -43,8 +43,8 @@
       <td>${f:formatLocalDateTime(mealTo.dateTime, 'yyyy-MM-dd HH:mm')}</td>
       <td>${mealTo.description}</td>
       <td>${mealTo.calories}</td>
-      <td><a href="">Update</a></td>
-      <td><a href="">Delete</a></td>
+      <td><a href="./UpdateMealServlet?mealId=${mealTo.id}">Update</a></td>
+      <td><a href="./DeleteMealServlet?mealId=${mealTo.id}">Delete</a></td>
     </tr>
   </c:forEach>
 </table>

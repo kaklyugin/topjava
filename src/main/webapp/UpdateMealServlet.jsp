@@ -3,7 +3,7 @@
 <%@taglib uri="http://topjava.ru/functions/dateformatter" prefix="f" %>
 <html lang="ru">
 <head>
-  <title>New meal</title>
+  <title>Update meal</title>
 </head>
 <style type="text/css">
     .common {
@@ -26,17 +26,20 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>New meal</h2>
-<br/>
-<form action='NewMealServlet' method="POST">
-  DateTime: <input type="datetime-local" name="meal_date">
+<h2>Update meal with id = ${mealForUpdate.id} </h2>
+<form action='UpdateMealServlet' method="POST">
+  <input type="hidden" name="mealId" value=${mealForUpdate.id}>
+  DateTime: <input type="datetime-local" name="meal_date"
+                   value="${f:formatLocalDateTime(mealForUpdate.dateTime, 'dd.MM.yyyy HH:mm')}"
+                   pattern="dd.MM.yyyy HH:mm"
+>
   <br/>
-  Description: <input type="text" name="description">
+  Description: <input type="text" name="description" value= ${mealForUpdate.description}>
   <br/>
-  Calories: <input type="text" name="calories"/>
+  Calories: <input type="text" name="calories" value= ${mealForUpdate.calories}>
   <br/>
   <br/>
-  <input type="submit" value="Add"/>
+  <input type="submit" value="Update"/>
 </form>
 <button onclick="window.history.back()" type="button">Cancel</button>
 </body>

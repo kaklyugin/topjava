@@ -12,31 +12,42 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class NewMealServlet extends HttpServlet {
-    private static final Logger log = getLogger(NewMealServlet.class);
+public class UpdateMealServlet extends HttpServlet {
+    private static final Logger log = getLogger(UpdateMealServlet.class);
     private final MealRepository mealRepository = MealInMemoryRepository.getInstance();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("loaded NewMealServlet get");
-        request.getRequestDispatcher("NewMealServlet.jsp").forward(request, response);
+        log.debug("loaded Update Meal Servlet get");
+        try {
+            final int mealId = Integer.parseInt(request.getParameter("mealId"));
+            final Meal mealForUpdate = mealRepository.getMealById(mealId);
+            request.setAttribute("mealForUpdate", mealForUpdate);
+            request.getRequestDispatcher("UpdateMealServlet.jsp").forward(request, response);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("errorServlet").forward(request, response);
+        }
     }
     
     @Override
+    //TODO По-хорошему нужен PUT, но у меня не получилось вызвать этот метод из html формы
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("launched NewMeal doPost");
+        log.debug("launched UpdateMealServlet doPost");
         request.setCharacterEncoding("UTF-8");
         try {
             Meal newMeal = new Meal(
-                    MealSequenceIdGenerator.generate(),
+                    Integer.parseInt(request.getParameter("mealId")),
                     DateUtil.toLocalDateTime(request.getParameter("meal_date")),
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories"))
             );
-            mealRepository.addMeal(newMeal);
+            mealRepository.updateMeal(newMeal);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());

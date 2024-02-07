@@ -15,28 +15,16 @@ import java.io.IOException;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class NewMealServlet extends HttpServlet {
-    private static final Logger log = getLogger(NewMealServlet.class);
+public class DeleteMealServlet extends HttpServlet {
+    private static final Logger log = getLogger(DeleteMealServlet.class);
     private final MealRepository mealRepository = MealInMemoryRepository.getInstance();
     
     @Override
+    //FIXME по-хорошему надо использовать doDelete, но у меня не получилось вызывать DELETE из <a href=''/>
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("loaded NewMealServlet get");
-        request.getRequestDispatcher("NewMealServlet.jsp").forward(request, response);
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("launched NewMeal doPost");
-        request.setCharacterEncoding("UTF-8");
+        log.debug("entered DeleteMealServlet doDelete");
         try {
-            Meal newMeal = new Meal(
-                    MealSequenceIdGenerator.generate(),
-                    DateUtil.toLocalDateTime(request.getParameter("meal_date")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories"))
-            );
-            mealRepository.addMeal(newMeal);
+            mealRepository.deleteMealById(Integer.parseInt(request.getParameter("mealId")));
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());

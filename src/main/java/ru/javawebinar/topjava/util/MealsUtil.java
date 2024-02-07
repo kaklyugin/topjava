@@ -1,8 +1,9 @@
 package ru.javawebinar.topjava.util;
 
-import ru.javawebinar.topjava.init.MealListTempDataStorage;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
+import ru.javawebinar.topjava.repository.MealInMemoryRepository;
+import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,8 +13,8 @@ import java.util.stream.Collectors;
 
 public class MealsUtil {
     public static void main(String[] args) {
-        
-        List<MealTo> mealsTo = filteredByStreams(MealListTempDataStorage.getMeals(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        MealRepository mealRepository = MealInMemoryRepository.getInstance();
+        List<MealTo> mealsTo = filteredByStreams(mealRepository.getAllMeals(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
     }
     
