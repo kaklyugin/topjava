@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.model;
 
+import ru.javawebinar.topjava.model.dto.MealDto;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,6 +44,10 @@ public class Meal {
     
     public int getId() {
         return id;
+    }
+    
+    public static Meal of(int id, MealDto mealDto) {
+        return new Meal(id, mealDto.getDateTime(), mealDto.getDescription(), mealDto.getCalories());
     }
     
 }

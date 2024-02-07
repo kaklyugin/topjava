@@ -26,13 +26,11 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Update meal with id = ${mealForUpdate.id} </h2>
+<h2>Update meal</h2>
 <form action='UpdateMealServlet' method="POST">
   <input type="hidden" name="mealId" value=${mealForUpdate.id}>
   DateTime: <input type="datetime-local" name="meal_date"
-                   value="${f:formatLocalDateTime(mealForUpdate.dateTime, 'dd.MM.yyyy HH:mm')}"
-                   pattern="dd.MM.yyyy HH:mm"
->
+                   value="${mealForUpdate.dateTime}">
   <br/>
   Description: <input type="text" name="description" value= ${mealForUpdate.description}>
   <br/>

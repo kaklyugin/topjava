@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealInMemoryRepository;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.MealSequenceIdGenerator;
 import ru.javawebinar.topjava.util.DateUtil;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -25,7 +23,7 @@ public class UpdateMealServlet extends HttpServlet {
         log.debug("loaded Update Meal Servlet get");
         try {
             final int mealId = Integer.parseInt(request.getParameter("mealId"));
-            final Meal mealForUpdate = mealRepository.getMealById(mealId);
+            final Meal mealForUpdate = mealRepository.getById(mealId);
             request.setAttribute("mealForUpdate", mealForUpdate);
             request.getRequestDispatcher("UpdateMealServlet.jsp").forward(request, response);
         } catch (Exception ex) {
@@ -47,7 +45,7 @@ public class UpdateMealServlet extends HttpServlet {
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories"))
             );
-            mealRepository.updateMeal(newMeal);
+            mealRepository.update(newMeal);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());

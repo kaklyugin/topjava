@@ -18,4 +18,10 @@ public class ErrorServlet extends HttpServlet {
         log.debug("forward to error");
         request.getRequestDispatcher("error.jsp").forward(request, response);
     }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("forward to error");
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+    }
 }

@@ -24,12 +24,11 @@
         <url-pattern>/meals</url-pattern>
     </servlet-mapping>
     <servlet>
-        <display-name>ErrorServlet</display-name>
-        <servlet-name>ErrorServlet</servlet-name>
+        <servlet-name>errorServlet</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.ErrorServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ErrorServlet</servlet-name>
+        <servlet-name>errorServlet</servlet-name>
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
     <servlet>

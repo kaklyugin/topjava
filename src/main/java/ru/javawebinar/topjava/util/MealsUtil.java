@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MealsUtil {
     public static void main(String[] args) {
         MealRepository mealRepository = MealInMemoryRepository.getInstance();
-        List<MealTo> mealsTo = filteredByStreams(mealRepository.getAllMeals(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
+        List<MealTo> mealsTo = filteredByStreams(mealRepository.getAll(), LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
     }
     

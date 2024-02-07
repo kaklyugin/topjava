@@ -25,7 +25,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("initializing meals list");
-        List<Meal> meals = mealRepository.getAllMeals();
+        List<Meal> meals = mealRepository.getAll();
         List<MealTo> mealTo = MealsUtil.filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, DEFAULT_CALORIES_PER_DAY);
         request.setAttribute("mealTo", mealTo);
         log.debug("forward to meals");
