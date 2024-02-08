@@ -38,7 +38,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>NewMealServlet</servlet-name>
-        <url-pattern>/NewMealServlet</url-pattern>
+        <url-pattern>/NewMeal</url-pattern>
     </servlet-mapping>
     <servlet>
         <display-name>UpdateMealServlet</display-name>
@@ -47,7 +47,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateMealServlet</servlet-name>
-        <url-pattern>/UpdateMealServlet</url-pattern>
+        <url-pattern>/UpdateMeal</url-pattern>
     </servlet-mapping>
     <servlet>
         <display-name>DeleteMealServlet</display-name>
@@ -56,7 +56,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteMealServlet</servlet-name>
-        <url-pattern>/DeleteMealServlet</url-pattern>
+        <url-pattern>/DeleteMeal</url-pattern>
     </servlet-mapping>
 
 </web-app>

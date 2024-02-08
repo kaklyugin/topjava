@@ -14,6 +14,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Error</h2>
-<p>${errorMessage}</p>
+<p>Oops...there's error</p>
+<p>See logs for details</p>
 </body>
 </html>

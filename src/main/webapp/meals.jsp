@@ -27,7 +27,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<a href="./NewMealServlet">Add meal</a>
+<a href="./NewMeal">Add meal</a>
 <table>
   <tr>
     <th>Date</th>
@@ -41,8 +41,8 @@
       <td>${f:formatLocalDateTime(mealTo.dateTime, 'yyyy-MM-dd HH:mm')}</td>
       <td>${mealTo.description}</td>
       <td>${mealTo.calories}</td>
-      <td><a href="./UpdateMealServlet?mealId=${mealTo.id}">Update</a></td>
-      <td><a href="./DeleteMealServlet?mealId=${mealTo.id}">Delete</a></td>
+      <td><a href="./UpdateMeal?mealId=${mealTo.id}">Update</a></td>
+      <td><a href="./DeleteMeal?mealId=${mealTo.id}">Delete</a></td>
     </tr>
   </c:forEach>
 </table>

@@ -28,12 +28,12 @@
 <hr>
 <h2>New meal</h2>
 <br/>
-<form action='NewMealServlet' method="POST">
+<form action='NewMeal' method="POST">
   DateTime: <input type="datetime-local" name="meal_date">
   <br/>
   Description: <input type="text" name="description">
   <br/>
-  Calories: <input type="text" name="calories"/>
+  Calories: <input type="number" name="calories"/>
   <br/>
   <br/>
   <input type="submit" value="Add"/>

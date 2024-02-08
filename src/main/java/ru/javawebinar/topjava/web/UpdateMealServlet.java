@@ -25,7 +25,7 @@ public class UpdateMealServlet extends HttpServlet {
             final int mealId = Integer.parseInt(request.getParameter("mealId"));
             final Meal mealForUpdate = mealRepository.getById(mealId);
             request.setAttribute("mealForUpdate", mealForUpdate);
-            request.getRequestDispatcher("UpdateMealServlet.jsp").forward(request, response);
+            request.getRequestDispatcher("updateMeal.jsp").forward(request, response);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());
@@ -34,7 +34,6 @@ public class UpdateMealServlet extends HttpServlet {
     }
     
     @Override
-    //TODO По-хорошему нужен PUT, но у меня не получилось вызвать этот метод из html формы
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("launched UpdateMealServlet doPost");
         request.setCharacterEncoding("UTF-8");
@@ -49,7 +48,7 @@ public class UpdateMealServlet extends HttpServlet {
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("errorServlet").forward(request, response);
+            response.sendRedirect("error.jsp");
         }
         response.sendRedirect(request.getContextPath() + "/meals");
     }

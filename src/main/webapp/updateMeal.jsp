@@ -27,14 +27,14 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Update meal</h2>
-<form action='UpdateMealServlet' method="POST">
+<form action='UpdateMeal' method="POST">
   <input type="hidden" name="mealId" value=${mealForUpdate.id}>
   DateTime: <input type="datetime-local" name="meal_date"
                    value="${mealForUpdate.dateTime}">
   <br/>
   Description: <input type="text" name="description" value= ${mealForUpdate.description}>
   <br/>
-  Calories: <input type="text" name="calories" value= ${mealForUpdate.calories}>
+  Calories: <input type="number" name="calories" value= ${mealForUpdate.calories}>
   <br/>
   <br/>
   <input type="submit" value="Update"/>

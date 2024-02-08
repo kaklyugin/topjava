@@ -17,7 +17,6 @@ public class DeleteMealServlet extends HttpServlet {
     private final MealRepository mealRepository = MealInMemoryRepository.getInstance();
     
     @Override
-    //FIXME по-хорошему надо использовать doDelete, но у меня не получилось вызывать DELETE из <a href=''/>
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("entered DeleteMealServlet doDelete");
         try {
@@ -25,7 +24,7 @@ public class DeleteMealServlet extends HttpServlet {
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("errorServlet").forward(request, response);
+            response.sendRedirect("error.jsp");
         }
         response.sendRedirect(request.getContextPath() + "/meals");
     }
