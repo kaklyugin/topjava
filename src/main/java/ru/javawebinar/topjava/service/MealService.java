@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
+
+import java.util.Collection;
+
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MealService {
@@ -15,14 +18,15 @@ public class MealService {
         this.repository = repository;
     }
     
-    public Meal save(Meal meal, int userId) {
-        return checkMealBelongsToUser(meal, userId) ? repository.save(meal, userId) : null;
+    public Collection<Meal> getAll(int userId) {
+        return repository.getAll(userId);
     }
     
-    private boolean checkMealBelongsToUser(Meal meal, int authorizedUserId) {
-        if (meal.getUserId() != authorizedUserId) {
-            throw new NotFoundException(String.format("User with id %s has no permissions for operations with selected meal", authorizedUserId));
-        }
-        return true;
+    public Meal getById(int mealId, int userId) {
+        return checkNotFoundWithId(repository.get(mealId, userId), mealId);
+    }
+    
+    public Meal create(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 }
