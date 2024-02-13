@@ -16,10 +16,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-    //TODO Временное решение. USER_ID надо будет брать из сессии
-    private static final Integer USER_ID = 1;
     
     private MealRepository repository;
     
@@ -32,15 +33,16 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        
+        // TODO сеттить пользователя в еду имеет смысл только после того, как проверена ее принадлежность этому пользователю (иначе получается, что заранее создаешь потенциально неправильный объект и передаешь его дальше через все слои приложения). А проверить принадлежность мы можем только там, где есть все данные о еде, т.е. на уровне репозитория. Поэтому в репозиторий meal [с пустым полем userId] и значение userId должны приходить по-отдельности, двумя параметрами.
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                USER_ID,
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")));
+                Integer.parseInt(request.getParameter("calories")),
+                authUserId()
+        );
         
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal,USER_ID);
+        repository.save(meal, authUserId());
         response.sendRedirect("meals");
     }
     
@@ -52,14 +54,14 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
-                repository.delete(id,USER_ID);
+                repository.delete(id, authUserId());
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(USER_ID, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        repository.get(getId(request),USER_ID);
+                        new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, authUserId()) :
+                        repository.get(getId(request), authUserId());
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
@@ -67,7 +69,7 @@ public class MealServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(USER_ID), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        MealsUtil.getTos(repository.getAll(authUserId()), authUserCaloriesPerDay()));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
