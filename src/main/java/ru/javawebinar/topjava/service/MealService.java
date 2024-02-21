@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
@@ -17,33 +16,33 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class MealService {
     private final MealRepository repository;
-    
+
     public MealService(MealRepository repository) {
         this.repository = repository;
     }
-    
+
     public List<MealTo> getAll(int userId, int caloriesPerDay) {
         return MealsUtil.getTos(repository.getAll(userId), caloriesPerDay);
     }
-    
-    public MealTo getById(int mealId, int userId, int caloriesPerDay) {
-        return MealsUtil.getTo(checkNotFoundWithId(repository.get(mealId, userId), mealId),caloriesPerDay);
+
+    public Meal getById(int mealId, int userId) {
+        return checkNotFoundWithId(repository.get(mealId, userId), mealId);
     }
-    
+
     public Meal create(Meal meal, int userId) {
         return repository.save(meal, userId);
     }
-    
+
     public void update(Meal meal, int userId) {
         checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
-    
+
     public void delete(int id, int userId) {
         checkNotFoundWithId(repository.delete(id, userId), userId);
     }
-    
+
     public List<MealTo> getAllByDateFilter(int userId, int caloriesPerDay, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        Collection<Meal> userMealPerDates = repository.getAllBetweenDates(userId, LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX));
+        Collection<Meal> userMealPerDates = repository.getAllBetweenDates(userId, startDate.atStartOfDay(), endDate.atStartOfDay().plusDays(1));
         return MealsUtil.getFilteredTos(userMealPerDates, caloriesPerDay, startTime, endTime);
     }
 }
