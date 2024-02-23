@@ -20,11 +20,11 @@ public class InMemoryMealRepository implements MealRepository {
     private final Integer DEFAULT_USER_ID = 1;
     private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
-    
+
     {
         MealsUtil.meals.forEach(m -> this.save(m, DEFAULT_USER_ID));
     }
-    
+
     @Override
     public Meal save(Meal meal, int userId) {
         //handle case: new meal
@@ -38,36 +38,38 @@ public class InMemoryMealRepository implements MealRepository {
         return get(meal.getId(), userId) != null ?
                 repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal) : null;
     }
-    
+
     @Override
     public boolean delete(int id, int userId) {
-        return repository.remove(id, get(id, userId));
+        Meal meal = get(id, userId);
+        return meal != null && (repository.remove(id) != null);
     }
-    
+
     @Override
     public Meal get(int id, int userId) {
-        return (repository.get(id) != null && repository.get(id).getUserId() == userId)
-                ? repository.get(id) : null;
+        Meal meal = repository.get(id);
+        return (meal != null && meal.getUserId() == userId) ? meal : null;
     }
-    
+
     @Override
     public List<Meal> getAll(int userId) {
-        return filterByPredicate(meal -> meal.getUserId().equals(userId));
+        return filterByPredicate(userId, meal -> true);
     }
-    
+
     @Override
     public List<Meal> getAllBetweenDates(int userId,
                                          LocalDateTime start,
                                          LocalDateTime end
-    ) { // TODO Я вот тут не знаю, как лучше - можно в принципе переиспользовать getAll, но тогда надо сюда добавить
-        // входной параметр filterByPredicate(Predicate<Meal> filter)
-        // подскажите, как лучше ?
-        return filterByPredicate(meal -> meal.getUserId().equals(userId)
-                && DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), start, end));
+    ) {
+        return filterByPredicate(userId, meal ->
+                DateTimeUtil.isBetweenIncludingBounds(meal.getDate(), start.toLocalDate(), end.toLocalDate()) &&
+                        DateTimeUtil.isBetweenHalfOpen(meal.getTime(), start.toLocalTime(), end.toLocalTime())
+        );
     }
-    
-    private List<Meal> filterByPredicate(Predicate<Meal> filter) {
+
+    private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
         return repository.values().stream()
+                .filter(meal -> meal.getUserId().equals(userId))
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());

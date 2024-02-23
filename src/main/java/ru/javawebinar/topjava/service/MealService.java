@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
@@ -41,8 +43,16 @@ public class MealService {
         checkNotFoundWithId(repository.delete(id, userId), userId);
     }
 
-    public List<MealTo> getAllByDateFilter(int userId, int caloriesPerDay, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        Collection<Meal> userMealPerDates = repository.getAllBetweenDates(userId, startDate.atStartOfDay(), endDate.atStartOfDay().plusDays(1));
-        return MealsUtil.getFilteredTos(userMealPerDates, caloriesPerDay, startTime, endTime);
+    public List<MealTo> getAllByDateFilter(int userId,
+                                           int caloriesPerDay,
+                                           LocalDate startDate,
+                                           LocalTime startTime,
+                                           LocalDate endDate,
+                                           LocalTime endTime) {
+        LocalDateTime start = DateTimeUtil.calculateStartDateTime(startDate, startTime);
+        LocalDateTime end = DateTimeUtil.calculateEndDateTime(endDate, endTime);
+        Collection<Meal> userMealPerDates = repository.getAllBetweenDates(userId, start, end);
+        return MealsUtil.getFilteredTos(userMealPerDates, caloriesPerDay, start.toLocalTime(), end.toLocalTime());
     }
+
 }
