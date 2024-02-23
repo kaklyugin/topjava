@@ -62,7 +62,7 @@ public class InMemoryMealRepository implements MealRepository {
                                          LocalDateTime end
     ) {
         return filterByPredicate(userId, meal ->
-                DateTimeUtil.isBetweenIncludingBounds(meal.getDate(), start.toLocalDate(), end.toLocalDate())
+                DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), start, end)
         );
     }
 
