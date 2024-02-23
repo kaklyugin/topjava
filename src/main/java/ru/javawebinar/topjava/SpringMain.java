@@ -28,24 +28,36 @@ public class SpringMain {
             // add meal for new user
             Meal mealForUserWithId_1 = new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500, 1);
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
-            // check meal get method
+//            // check meal get method
             System.out.println("mealRestController.get(2)) = " + mealRestController.get(2));
-            // filter check with non null params
+//            // filter check with non null params
             mealRestController.getAllByDateFilter(
                     LocalDate.of(2020, Month.JANUARY, 30),
                     LocalTime.of(10, 0, 0),
                     LocalDate.of(2020, Month.JANUARY, 30),
                     LocalTime.of(14, 0, 0)
             ).forEach(System.out::println);
-            // filter check with null params
-            mealRestController.getAllByDateFilter(null, null, null, null).forEach(System.out::println);
-            // filter check with partially null params
+//            // filter check with null params
+//            mealRestController.getAllByDateFilter(null, null, null, null).forEach(System.out::println);
+//            // filter check with partially null params
             mealRestController.getAllByDateFilter(
                     null,
                     null,
                     LocalDate.of(2020, 1, 30),
                     LocalTime.of(12, 0, 0))
                     .forEach(System.out::println);
+            // check meal getAll method
+            System.out.println("getAll");
+            mealRestController.getAll().forEach(System.out::println);
+            System.out.println("getAllByDateFilter with nulls");
+            mealRestController.getAllByDateFilter(null, null, null, null).forEach(System.out::println);
+            // filter check Kate's case
+            System.out.println("getAllByDateFilter");
+            mealRestController.getAllByDateFilter(
+                    LocalDate.of(2020, 1, 30),
+                    LocalTime.of(13, 0, 0),
+                    LocalDate.of(2020, 1, 31),
+                    LocalTime.of(15, 0, 0)).forEach(System.out::println);
             // try to update for not existing user
             Meal mealWithId = mealRestController.create(mealForUserWithId_1);
             mealWithId.setUserId(2);
