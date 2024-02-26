@@ -22,3 +22,12 @@ VALUES (100000, to_timestamp('2020-01-30 10:00', 'YYYY-MM-DD HH24:MI:SS'), 'За
        (100000, to_timestamp('2020-01-31 10:00', 'YYYY-MM-DD HH24:MI:SS'), 'Завтрак', 1000),
        (100000, to_timestamp('2020-01-31 13:00', 'YYYY-MM-DD HH24:MI:SS'), 'Обед', 500),
        (100000, to_timestamp('2020-01-31 20:00', 'YYYY-MM-DD HH24:MI:SS'), 'Ужин', 410);
+
+INSERT INTO meals (user_id, date_time, description, calories)
+VALUES (100001, to_timestamp('2020-01-30 10:00', 'YYYY-MM-DD HH24:MI:SS'), 'Завтрак админа', 500),
+       (100001, to_timestamp('2020-01-30 13:00', 'YYYY-MM-DD HH24:MI:SS'), 'Обед админа', 1000),
+       (100001, to_timestamp('2020-01-30 20:00', 'YYYY-MM-DD HH24:MI:SS'), 'Ужин админа', 500),
+       (100001, to_timestamp('2020-01-31 00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Еда на граничное значение админа', 100),
+       (100001, to_timestamp('2020-01-31 10:00', 'YYYY-MM-DD HH24:MI:SS'), 'Завтрак админа', 1000),
+       (100001, to_timestamp('2020-01-31 13:00', 'YYYY-MM-DD HH24:MI:SS'), 'Обед админа', 500),
+       (100001, to_timestamp('2020-01-31 20:00', 'YYYY-MM-DD HH24:MI:SS'), 'Ужин админа', 410);
