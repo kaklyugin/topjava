@@ -13,9 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -52,11 +49,7 @@ public class MealServiceTest extends TestCase {
     @Test
     public void exceptionDuplicateMealCreate() {
         assertThrows(DataAccessException.class, () -> service.create(
-                new Meal(
-                        LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),
-                        "Duplicate",
-                        500),
-                USER_ID));
+                new Meal(breakfast_30.getDateTime(), "Duplicate", 500), USER_ID));
     }
 
     @Test
@@ -65,7 +58,7 @@ public class MealServiceTest extends TestCase {
     }
 
     @Test
-    public void crete() {
+    public void create() {
         Meal created = service.create(getNew(), USER_ID);
         Integer newId = created.getId();
         Meal newMeal = getNew();
