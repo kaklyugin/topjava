@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
@@ -39,7 +40,7 @@ public class MealService {
     }
 
     public void update(Meal meal, int userId) {
-        Assert.notNull(meal, "meal must not be null");
+        Objects.requireNonNull(meal, "meal must not be null");
         checkNotFoundWithId(repository.save(meal, userId), meal.id());
     }
 

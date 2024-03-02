@@ -1,16 +1,38 @@
 package ru.javawebinar.topjava.model;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@NamedQueries({
+        @NamedQuery(name = Meal.ALL_SORTED, query = "select m from Meal m where m.user.id=:userId order by m.dateTime desc"),
+        @NamedQuery(name = Meal.BY_ID, query = "select m from Meal m where m.user.id=:userId and m.id=:id"),
+        @NamedQuery(name = Meal.DELETE, query = "delete from Meal m where m.id=:id"),
+        @NamedQuery(name = Meal.BETWEEN_HALF_OPEN, query = "select m from Meal m where m.user.id=:userId and m.dateTime >=:startDateTime and m.dateTime < :endDateTime order by m.dateTime desc"),
+})
+
+@Entity
+@Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
 public class Meal extends AbstractBaseEntity {
+
+    public static final String ALL_SORTED = "Meal.getAll";
+    public static final String BY_ID = "Meal.getById";
+    public static final String DELETE = "Meal.delete";
+    public static final String BETWEEN_HALF_OPEN = "Meal.betweenHalfOpen";
+
+    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp without timezone", updatable = false)
+    @NotNull
     private LocalDateTime dateTime;
 
+    @Column(name = "description", columnDefinition = "food description", nullable = false)
     private String description;
 
+    @Column(name = "calories", columnDefinition = "food calories, int", nullable = false)
+    @Range(min = 0)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
