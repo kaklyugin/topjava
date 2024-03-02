@@ -8,7 +8,6 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfDayOrMin;
 import static ru.javawebinar.topjava.util.DateTimeUtil.atStartOfNextDayOrMax;
@@ -24,7 +23,13 @@ public class MealService {
     }
 
     public Meal get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
+        Meal meal = null;
+        try {
+            meal = repository.get(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return checkNotFoundWithId(meal, id);
     }
 
     public void delete(int id, int userId) {
@@ -40,7 +45,6 @@ public class MealService {
     }
 
     public void update(Meal meal, int userId) {
-        Objects.requireNonNull(meal, "meal must not be null");
         checkNotFoundWithId(repository.save(meal, userId), meal.id());
     }
 
