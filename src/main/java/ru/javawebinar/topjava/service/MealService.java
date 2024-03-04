@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,13 +23,7 @@ public class MealService {
     }
 
     public Meal get(int id, int userId) {
-        Meal meal = null;
-        try {
-            meal = repository.get(id, userId);
-        } catch (NoResultException e) {
-            e.printStackTrace();
-        }
-        return checkNotFoundWithId(meal, id);
+        return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
     public void delete(int id, int userId) {
@@ -47,13 +39,8 @@ public class MealService {
     }
 
     public void update(Meal meal, int userId) {
-        Meal newMeal;
-        try {
-            newMeal = repository.save(meal, userId);
-        } catch (NoResultException e) {
-            throw new NotFoundException("Not found entity with id = " + meal.id());
-        }
-        checkNotFoundWithId(meal.id(), newMeal.id());
+        Meal newMeal = repository.save(meal, userId);
+        checkNotFoundWithId(newMeal, meal.id());
     }
 
     public Meal create(Meal meal, int userId) {

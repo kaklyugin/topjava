@@ -27,16 +27,16 @@ public class Meal extends AbstractBaseEntity {
     public static final String DELETE = "Meal.delete";
     public static final String BETWEEN_HALF_OPEN = "Meal.betweenHalfOpen";
 
-    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp")
+    @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
 
-    @Column(name = "description", columnDefinition = "text", nullable = false)
+    @Column(name = "description", nullable = false)
     @NotBlank
     @Length(min = 2, max = 120)
     private String description;
 
-    @Column(name = "calories", columnDefinition = "int", nullable = false)
+    @Column(name = "calories", nullable = false)
     @Min(10)
     @Max(5000)
     private int calories;
