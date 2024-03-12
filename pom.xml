@@ -177,6 +177,14 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--Fix issue unknown enum constant javax.annotation.meta.When.MAYBE-->
+<!--    https://stackoverflow.com/questions/53326271/spring-nullable-annotation-generates-unknown-enum-constant-warning-->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
