@@ -2,17 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
-<head>
-    <jsp:include page="fragments/headTag.jsp"/>
-</head>
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
+    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <h3><spring:message code="app.home"/></h3>
     <hr>
-    <h2><spring:message code="meal.addOrUpdate"/></h2>
+    <h2>
+        <c:if test="${meal.id == null}">
+            <spring:message code="meal.add"/>
+        </c:if>
+        <c:if test="${meal.id != null}">
+            <spring:message code="meal.update"/>
+        </c:if>
+    </h2>
     <!--Не нашёл пока способа анализировать Context path, чтобы различать /meal vs /meal/{id} -->
-    <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+
     <form method="post">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>

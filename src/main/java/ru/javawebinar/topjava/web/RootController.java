@@ -8,14 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.javawebinar.topjava.service.UserService;
-import ru.javawebinar.topjava.web.meal.MealRootController;
+import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
-import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 
 @Controller
 public class RootController {
@@ -23,9 +18,9 @@ public class RootController {
 
     @Autowired
     private UserService service;
-
+    
     @Autowired
-    private MealRootController mealRootController;
+    private MealRestController mealRestController;
 
     @GetMapping("/")
     public String root() {
@@ -47,15 +42,11 @@ public class RootController {
         SecurityUtil.setAuthUserId(userId);
         return "redirect:meals";
     }
-
+    
     @GetMapping("/meals")
-    public String getMeals(HttpServletRequest request, Model model) {
-        log.info("meals");
-        LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
-        LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
-        LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
-        LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
-        model.addAttribute("meals", mealRootController.getBetween(startDate, startTime, endDate, endTime));
+    public String getMeals(Model model) {
+        log.info("get");
+        model.addAttribute("meals", mealRestController.getAll());
         return "meals";
     }
 }
